@@ -1,0 +1,32 @@
+CREATE SEQUENCE item_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE store_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE user_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE cart_id_seq START WITH 1 INCREMENT BY 1;
+
+CREATE TABLE Item (
+    itemID INT DEFAULT item_id_seq.NEXTVAL PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    type VARCHAR(20),
+    description CLOB,
+    storeID INT
+);
+
+CREATE TABLE Store (
+    storeID INT DEFAULT store_id_seq.NEXTVAL PRIMARY KEY,
+    itemID INT
+);
+
+CREATE TABLE Users (
+    userID INT DEFAULT user_id_seq.NEXTVAL PRIMARY KEY,
+    username VARCHAR(20) NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    role VARCHAR(10) NOT NULL,
+    storeID INT,
+    cartID INT
+);
+
+CREATE TABLE Cart (
+    cartID INT DEFAULT cart_id_seq.NEXTVAL PRIMARY KEY,
+    userID INT
+);
+

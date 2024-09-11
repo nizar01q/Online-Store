@@ -1,0 +1,26 @@
+ALTER TABLE Item
+ADD CONSTRAINT fk_item_store
+FOREIGN KEY (storeID) REFERENCES Store(storeID);
+
+ALTER TABLE Item
+ADD (userID INT);
+
+ALTER TABLE Item
+ADD CONSTRAINT fk_item_user
+FOREIGN KEY (userID) REFERENCES Users(userID);
+
+ALTER TABLE Store
+ADD CONSTRAINT fk_store_item
+FOREIGN KEY (itemID) REFERENCES Item(itemID);
+
+ALTER TABLE Users
+ADD CONSTRAINT fk_users_store
+FOREIGN KEY (storeID) REFERENCES Store(storeID);
+
+ALTER TABLE Users
+ADD CONSTRAINT fk_users_cart
+FOREIGN KEY (cartID) REFERENCES Cart(cartID);
+
+ALTER TABLE Cart
+ADD CONSTRAINT fk_cart_users
+FOREIGN KEY (userID) REFERENCES Users(userID);
