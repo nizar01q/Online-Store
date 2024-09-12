@@ -25,7 +25,7 @@ public class CartController {
         List<Cart> cartList = cartService.showCarts();
         ModelAndView mv = new ModelAndView();
         mv.addObject("carts",cartList);
-        mv.setViewName("allcarts.jsp");
+        mv.setViewName("allcarts.html");
 
         return mv;
     }
@@ -39,7 +39,7 @@ public class CartController {
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("carts",carts);
-        mv.setViewName("allcarts.jsp");
+        mv.setViewName("allcarts.html");
 
         return mv;
     }
@@ -52,7 +52,7 @@ public class CartController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","New cart");
         mv.addObject("addedOrRemoved","created");
-        mv.setViewName("success.jsp");
+        mv.setViewName("success.html");
 
         return mv;
     }
@@ -65,7 +65,7 @@ public class CartController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","Cart");
         mv.addObject("addedOrRemoved","removed");
-        mv.setViewName("success.jsp");
+        mv.setViewName("success.html");
 
         return mv;
     }

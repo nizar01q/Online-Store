@@ -34,7 +34,7 @@ public class UserController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","New user");
         mv.addObject("addedOrRemoved","added");
-        mv.setViewName("success.jsp");
+        mv.setViewName("success.html");
 
         return mv;
     }
@@ -47,7 +47,7 @@ public class UserController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","User");
         mv.addObject("addedOrRemoved","removed");
-        mv.setViewName("success.jsp");
+        mv.setViewName("success.html");
 
         return mv;
     }
@@ -57,7 +57,7 @@ public class UserController {
         List<User> allUsersList = userService.showUsers();
         ModelAndView mv = new ModelAndView();
         mv.addObject("users",allUsersList);
-        mv.setViewName("allusers.jsp");
+        mv.setViewName("allusers.html");
         return mv;
     }
 
@@ -70,7 +70,7 @@ public class UserController {
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("users",users);
-        mv.setViewName("allusers.jsp");
+        mv.setViewName("allusers.html");
         return mv;
     }
 }

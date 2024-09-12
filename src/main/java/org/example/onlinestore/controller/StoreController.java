@@ -27,7 +27,7 @@ public class StoreController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","New Store");
         mv.addObject("addedOrRemoved","added");
-        mv.setViewName("success.jsp");
+        mv.setViewName("success.html");
 
         return mv;
     }
@@ -40,7 +40,7 @@ public class StoreController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","Store");
         mv.addObject("addedOrRemoved","removed");
-        mv.setViewName("success.jsp");
+        mv.setViewName("success.html");
 
         return mv;
     }
@@ -51,7 +51,7 @@ public class StoreController {
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("stores",storeList);
-        mv.setViewName("allstores.jsp");
+        mv.setViewName("allstores.html");
 
         return mv;
     }
@@ -65,7 +65,7 @@ public class StoreController {
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("stores",stores);
-        mv.setViewName("allstores.jsp");
+        mv.setViewName("allstores.html");
 
         return mv;
     }

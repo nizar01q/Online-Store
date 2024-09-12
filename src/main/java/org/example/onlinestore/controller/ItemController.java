@@ -30,7 +30,7 @@ public class ItemController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","New item");
         mv.addObject("addedOrRemoved","added");
-        mv.setViewName("success.jsp");
+        mv.setViewName("success.html");
 
         return mv;
     }
@@ -44,7 +44,7 @@ public class ItemController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","Item");
         mv.addObject("addedOrRemoved","removed");
-        mv.setViewName("success.jsp");
+        mv.setViewName("success.html");
 
         return mv;
     }
@@ -61,7 +61,7 @@ public class ItemController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","Item");
         mv.addObject("addedOrRemoved","updated");
-        mv.setViewName("success.jsp");
+        mv.setViewName("success.html");
 
         return mv;
     }
@@ -75,7 +75,7 @@ public class ItemController {
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("items", items);
-        mv.setViewName("allitems.jsp");
+        mv.setViewName("allitems.html");
 
         return mv;
     }
@@ -86,7 +86,7 @@ public class ItemController {
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("items", itemList);
-        mv.setViewName("allitems.jsp");
+        mv.setViewName("allitems.html");
 
         return mv;
     }

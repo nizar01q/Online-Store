@@ -53,8 +53,8 @@
     <div class="message-container">
         <div class="message-box">
             <h2>Success!</h2>
-            <p><%=request.getAttribute("newOrNot")%> has been <%=request.getAttribute("addedOrRemoved")%></p>
-            <a href="management.jsp">Back to Home</a>
+            <p th:text="${newOrNot} + ' has been ' + ${addedOrRemoved}"></p>
+            <a href="/home">Back to Home</a>
         </div>
     </div>
 </body>
