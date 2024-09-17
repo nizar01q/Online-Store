@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Table(name = "ITEM")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -19,6 +20,7 @@ public class Item {
     private String title;
     private String type;
     private String description;
+
 
     public Item(int itemID) {
         this.itemID = itemID;

@@ -4,11 +4,12 @@ spring:
     username: nizar
     password: nizar123
     driver-class-name: oracle.jdbc.OracleDriver
-  security:
-    user:
-      name: nizar
-      password: 1234
 
-
-
-
+server:
+  servlet:
+    session:
+      timeout: 30m
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.web.session: DEBUG

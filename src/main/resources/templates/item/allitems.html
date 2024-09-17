@@ -1,6 +1,4 @@
-<%@ page import="org.example.onlinestore.entity.Item" %>
-<%@ page import="java.util.List" %>
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -50,16 +48,14 @@
                 </tr>
             </thead>
             <tbody>
-                <% List<Item> items = (List<Item>) request.getAttribute("items");
-                for (Item item: items){
-                %>
-                <tr>
-                    <td><%= item.getItemID()%></td>
-                    <td><%= item.getTitle() %></td>
-                    <td><%= item.getType() %></td>
-                    <td><%= item.getDescription() %></td>
+
+                <tr th:each = "item : ${items}">
+                    <td th:text="${item.getItemID()}"></td>
+                    <td th:text="${item.getTitle()}"></td>
+                    <td th:text="${item.getType()}"></td>
+                    <td th:text="${item.getDescription()}"></td>
                 </tr>
-            <% } %>
+
 
             </tbody>
         </table>

@@ -27,7 +27,7 @@ public class StoreController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","New Store");
         mv.addObject("addedOrRemoved","added");
-        mv.setViewName("success.html");
+        mv.setViewName("success");
 
         return mv;
     }
@@ -40,7 +40,7 @@ public class StoreController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","Store");
         mv.addObject("addedOrRemoved","removed");
-        mv.setViewName("success.html");
+        mv.setViewName("success");
 
         return mv;
     }
@@ -51,7 +51,7 @@ public class StoreController {
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("stores",storeList);
-        mv.setViewName("allstores.html");
+        mv.setViewName("store/allstores");
 
         return mv;
     }
@@ -65,8 +65,28 @@ public class StoreController {
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("stores",stores);
-        mv.setViewName("allstores.html");
+        mv.setViewName("store/allstores");
 
         return mv;
+    }
+
+    @GetMapping("/storeDeletion")
+    public String storeDeletion(){
+        return "store/storeDeletion";
+    }
+
+    @GetMapping("/storeGet")
+    public String storeGet(){
+        return "store/storeGet";
+    }
+
+    @GetMapping("/allstores")
+    public String allstores(){
+        return "store/allstores";
+    }
+
+    @GetMapping("/manageStores")
+    public String manageStores(){
+        return "store/manageStores";
     }
 }

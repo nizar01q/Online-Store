@@ -1,42 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Store - Homepage</title>
+    <title>EchoShop - Homepage</title>
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-image: url("images/homebackground.jpg");
+            font-family: 'Arial', sans-serif;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/home.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            color: white;
         }
         .header {
-            background-color: #4CAF50;
+            background-color: rgba(76, 175, 80, 0.9);
             color: white;
-            padding: 15px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
         .header h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: 28px;
+            letter-spacing: 1px;
         }
-        .header .search-bar {
+        .search-bar {
             flex-grow: 1;
-            margin-left: 20px;
-            margin-right: 20px;
+            margin: 0 20px;
+            position: relative;
         }
         .search-bar input[type="text"] {
             width: 100%;
-            padding: 10px;
-            border-radius: 4px;
+            padding: 12px;
+            border-radius: 25px;
             border: none;
             box-sizing: border-box;
+            padding-left: 20px;
+            font-size: 16px;
         }
         .icons {
             display: flex;
@@ -46,7 +50,8 @@
         .icons a {
             color: white;
             text-decoration: none;
-            font-size: 18px;
+            font-size: 22px;
+            transition: color 0.3s;
         }
         .icons a:hover {
             color: #ddd;
@@ -54,31 +59,59 @@
         .container {
             display: flex;
             justify-content: center;
-            padding: 20px;
+            flex-wrap: wrap;
+            padding: 40px;
         }
         .category-card {
             background-color: white;
+            color: black;
             padding: 20px;
-            margin: 10px;
+            margin: 15px;
             border-radius: 8px;
             width: 300px;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
         .category-card h2 {
             margin: 0 0 10px;
+            font-size: 22px;
+        }
+        .category-card p {
+            margin: 10px 0;
+            color: #555;
         }
         .category-card a {
-            display: block;
-            margin-top: 10px;
+            display: inline-block;
+            margin-top: 15px;
             background-color: #28a745;
             color: white;
             text-decoration: none;
-            padding: 10px;
+            padding: 12px 20px;
             border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s;
         }
         .category-card a:hover {
             background-color: #218838;
+        }
+        .category-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .search-bar {
+                margin: 10px 0;
+            }
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
@@ -89,10 +122,10 @@
             <input type="text" placeholder="Search for products...">
         </div>
         <div class="icons">
-            <a href="#" th:href="@{manageUsers}" title="Login">
+            <a href="#" th:href="@{/manageUsers}" title="Manage Users">
                 &#128100;
             </a>
-            <a href="#" th:href="@{manageCarts}" title="Carts">
+            <a href="#" th:href="@{/manageCarts}" title="Manage Carts">
                 &#128722;
             </a>
         </div>
@@ -102,17 +135,17 @@
         <div class="category-card">
             <h2>Electronics</h2>
             <p>Browse our latest gadgets and devices.</p>
-            <a href="category.jsp?category=electronics">Shop Now</a>
+            <a href="#" th:href="@{/manageItems}">Shop Now</a>
         </div>
         <div class="category-card">
             <h2>Clothing</h2>
             <p>Explore our fashion collection.</p>
-            <a href="category.jsp?category=clothing">Shop Now</a>
+            <a href="#" th:href="@{/category?category=clothing}">Shop Now</a>
         </div>
         <div class="category-card">
             <h2>Home & Kitchen</h2>
             <p>Upgrade your home essentials.</p>
-            <a href="category.jsp?category=home">Shop Now</a>
+            <a href="#" th:href="@{/category?category=home}">Shop Now</a>
         </div>
     </div>
 </body>

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "CART")
+@Table(name= "CART")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -17,4 +17,6 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cart_id_seq")
     @SequenceGenerator(name = "cart_id_seq", sequenceName = "cart_id_seq", allocationSize = 1)
     private int cartID;
+
+
 }

@@ -1,6 +1,4 @@
-<%@ page import="org.example.onlinestore.entity.Store" %>
-<%@ page import="java.util.List" %>
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -47,13 +45,10 @@
                 </tr>
             </thead>
             <tbody>
-                <% List<Store> stores = (List<Store>) request.getAttribute("stores");
-                for (Store store: stores){
-                %>
-                <tr>
-                    <td><%= store.getStoreID()%></td>
+
+                <tr th:each="store : ${stores}">
+                    <td th:text="${store.getStoreID()}"></td>
                 </tr>
-            <% } %>
 
             </tbody>
         </table>

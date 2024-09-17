@@ -23,7 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig   {
     private UserDetailsService userDetailsService;
 
     @Bean
@@ -40,7 +40,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
     http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(authz -> authz
-            .requestMatchers("/login").permitAll()
+            .requestMatchers("/","/login", "/register","/adduser","/success", "/images/**").permitAll()
             .anyRequest().authenticated()
         )
         .formLogin(form -> form
@@ -49,9 +49,10 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
             .permitAll()
         )
         .sessionManagement(session -> session
-            .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .maximumSessions(1).maxSessionsPreventsLogin(true)
         );
     return http.build();
 }
+
 
 }

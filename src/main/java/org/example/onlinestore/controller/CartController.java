@@ -20,12 +20,12 @@ import java.util.Optional;
 public class CartController {
     private final CartService cartService;
 
-    @GetMapping("/getallcarts")
+    @GetMapping("/allcarts")
     public ModelAndView showCarts(){
         List<Cart> cartList = cartService.showCarts();
         ModelAndView mv = new ModelAndView();
         mv.addObject("carts",cartList);
-        mv.setViewName("allcarts.html");
+        mv.setViewName("cart/allcarts");
 
         return mv;
     }
@@ -39,7 +39,7 @@ public class CartController {
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("carts",carts);
-        mv.setViewName("allcarts.html");
+        mv.setViewName("cart/allcarts");
 
         return mv;
     }
@@ -52,7 +52,7 @@ public class CartController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","New cart");
         mv.addObject("addedOrRemoved","created");
-        mv.setViewName("success.html");
+        mv.setViewName("success");
 
         return mv;
     }
@@ -65,8 +65,23 @@ public class CartController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","Cart");
         mv.addObject("addedOrRemoved","removed");
-        mv.setViewName("success.html");
+        mv.setViewName("success");
 
         return mv;
+    }
+
+    @GetMapping("/cartDeletion")
+    public String cartDeletion(){
+        return "cart/cartDeletion";
+    }
+
+    @GetMapping("/cartGet")
+    public String cartGet(){
+        return "cart/cartGet";
+    }
+
+    @GetMapping("/manageCarts")
+    public String manageCarts(){
+        return "cart/manageCarts";
     }
 }

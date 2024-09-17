@@ -1,6 +1,9 @@
 package org.example.onlinestore.service;
+import org.springframework.stereotype.Service;
+
 import java.util.regex.Pattern;
 
+@Service
 public class PasswordValidator {
     String lengthPattern = ".{8,}";
     String upperCasePattern = ".*[A-Z].*";
@@ -8,25 +11,27 @@ public class PasswordValidator {
     String digitPattern = ".*[0-9].*";
     String specialCharPattern = ".*[!@#$%^&*].*";
 
+    String errorMessage;
+
     public boolean validatePassword(String password){
         if (!Pattern.matches(lengthPattern, password)){
-            System.out.println("Password must be at least 8 characters long");
+            errorMessage = "Password must be at least 8 characters long";
             return false;
         }
         if(!Pattern.matches(upperCasePattern, password)){
-            System.out.println("Password must contain at least one uppercase letter");
+            errorMessage = "Password must contain at least one uppercase letter";
             return false;
         }
         if(!Pattern.matches(lowerCasePattern, password)){
-            System.out.println("Password must contain at least one lowercase letter");
+            errorMessage = "Password must contain at least one lowercase letter";
             return false;
         }
         if(!Pattern.matches(digitPattern, password)){
-            System.out.println("Password must contain at least one number");
+            errorMessage = "Password must contain at least one number";
             return false;
         }
-        if(Pattern.matches(specialCharPattern, password)){
-            System.out.println("Password must contain at least one special character");
+        if(!Pattern.matches(specialCharPattern, password)){
+            errorMessage = "Password must contain at least one special character";
             return false;
         }
     return true;

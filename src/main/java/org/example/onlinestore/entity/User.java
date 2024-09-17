@@ -28,6 +28,11 @@ public class User {
     private String role;
 
 
+
+    @OneToOne
+    @JoinColumn(name = "CART_CARTID")
+    private Cart cart;
+
     public User(int userID) {
         this.userID = userID;
     }

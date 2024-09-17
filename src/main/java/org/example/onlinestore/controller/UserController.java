@@ -27,16 +27,24 @@ public class UserController {
     public ModelAndView addUser(@RequestParam("userName") String userName,
                           @RequestParam("password") String password,
                           @RequestParam("role") String role){
-
+        try {
         User user = new User(userName,password,role);
         userService.createUser(user);
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","New user");
         mv.addObject("addedOrRemoved","added");
-        mv.setViewName("success.html");
+        mv.setViewName("success");
 
         return mv;
+        }
+
+        catch (IllegalArgumentException e){
+            ModelAndView mv = new ModelAndView();
+            mv.addObject("error",e.getMessage());
+            mv.setViewName("register");
+            return mv;
+        }
     }
 
     @PostMapping("/removeuser")
@@ -47,7 +55,7 @@ public class UserController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","User");
         mv.addObject("addedOrRemoved","removed");
-        mv.setViewName("success.html");
+        mv.setViewName("success");
 
         return mv;
     }
@@ -57,7 +65,7 @@ public class UserController {
         List<User> allUsersList = userService.showUsers();
         ModelAndView mv = new ModelAndView();
         mv.addObject("users",allUsersList);
-        mv.setViewName("allusers.html");
+        mv.setViewName("user/allusers");
         return mv;
     }
 
@@ -70,7 +78,32 @@ public class UserController {
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("users",users);
-        mv.setViewName("allusers.html");
+        mv.setViewName("user/allusers");
         return mv;
+    }
+
+    @GetMapping("/manageUsers")
+    public String manageUsers(){
+        return "user/manageUsers";
+    }
+
+    @GetMapping("/userCreation")
+    public String userCreation(){
+        return "user/userCreation";
+    }
+
+    @GetMapping("/userDeletion")
+    public String userDeletion(){
+        return "user/userDeletion";
+    }
+
+    @GetMapping("/userGet")
+    public String userGet(){
+        return "user/userGet";
+    }
+
+    @GetMapping("/allusers")
+    public String allusers(){
+        return "user/allusers";
     }
 }

@@ -30,7 +30,7 @@ public class ItemController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","New item");
         mv.addObject("addedOrRemoved","added");
-        mv.setViewName("success.html");
+        mv.setViewName("success");
 
         return mv;
     }
@@ -44,7 +44,7 @@ public class ItemController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","Item");
         mv.addObject("addedOrRemoved","removed");
-        mv.setViewName("success.html");
+        mv.setViewName("success");
 
         return mv;
     }
@@ -61,7 +61,7 @@ public class ItemController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","Item");
         mv.addObject("addedOrRemoved","updated");
-        mv.setViewName("success.html");
+        mv.setViewName("success");
 
         return mv;
     }
@@ -75,7 +75,7 @@ public class ItemController {
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("items", items);
-        mv.setViewName("allitems.html");
+        mv.setViewName("item/allitems");
 
         return mv;
     }
@@ -86,8 +86,38 @@ public class ItemController {
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("items", itemList);
-        mv.setViewName("allitems.html");
+        mv.setViewName("item/allitems");
 
         return mv;
+    }
+
+    @GetMapping("/manageItems")
+    public String manageItems(){
+        return "item/manageItems";
+    }
+
+    @GetMapping("/itemAddition")
+    public String itemAddition(){
+        return "item/itemAddition";
+    }
+
+    @GetMapping("/itemDeletion")
+    public String itemDeletion(){
+        return "item/itemDeletion";
+    }
+
+     @GetMapping("/itemGet")
+    public String itemGet(){
+        return "item/itemGet";
+    }
+
+    @GetMapping("/itemUpdate")
+    public String itemUpdate(){
+        return "item/itemUpdate";
+    }
+
+    @GetMapping("/allitems")
+    public String allitems(){
+        return "item/allitems";
     }
 }

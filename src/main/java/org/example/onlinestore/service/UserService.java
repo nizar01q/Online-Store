@@ -19,6 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepo userRepo;
+    private final PasswordValidator validator;
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public List<User> showUsers(){
@@ -30,6 +31,9 @@ public class UserService implements UserDetailsService {
     }
 
     public void createUser(User user){
+        if(!validator.validatePassword(user.getPassword())){
+            throw new IllegalArgumentException(validator.errorMessage);
+        };
         user.setPassword(encoder.encode(user.getPassword()));
         userRepo.save(user);
     }
