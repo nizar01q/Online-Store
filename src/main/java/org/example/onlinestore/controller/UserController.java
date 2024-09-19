@@ -3,7 +3,9 @@ package org.example.onlinestore.controller;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.example.onlinestore.entity.Cart;
 import org.example.onlinestore.entity.User;
+import org.example.onlinestore.service.CartService;
 import org.example.onlinestore.service.UserService;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
@@ -28,15 +30,15 @@ public class UserController {
                           @RequestParam("password") String password,
                           @RequestParam("role") String role){
         try {
-        User user = new User(userName,password,role);
-        userService.createUser(user);
+            User user = new User(userName,password,role);
+            userService.createUser(user);
 
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("newOrNot","New user");
-        mv.addObject("addedOrRemoved","added");
-        mv.setViewName("success");
+            ModelAndView mv = new ModelAndView();
+            mv.addObject("newOrNot","New user");
+            mv.addObject("addedOrRemoved","added");
+            mv.setViewName("success");
 
-        return mv;
+            return mv;
         }
 
         catch (IllegalArgumentException e){

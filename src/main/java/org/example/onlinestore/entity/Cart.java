@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name= "CART")
 @NoArgsConstructor
@@ -19,4 +21,16 @@ public class Cart {
     private int cartID;
 
 
+    @ManyToMany
+    @JoinTable(
+            name = "CART_ITEM",
+            joinColumns = @JoinColumn(name = "CART_CARTID"),
+            inverseJoinColumns = @JoinColumn(name = "ITEM_ITEMID")
+    )
+    private List<Item> items;
+
+
+    public Cart(int cartID) {
+        this.cartID = cartID;
+    }
 }

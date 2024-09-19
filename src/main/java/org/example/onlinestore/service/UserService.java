@@ -1,8 +1,11 @@
 package org.example.onlinestore.service;
 
-import lombok.AllArgsConstructor;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.example.onlinestore.entity.Cart;
 import org.example.onlinestore.model.UserPrinciple;
+import org.example.onlinestore.repo.CartRepo;
 import org.example.onlinestore.repo.UserRepo;
 import org.example.onlinestore.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,12 +20,15 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService implements UserDetailsService {
     private final UserRepo userRepo;
+    private final CartRepo cartRepo;
     private final PasswordValidator validator;
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public List<User> showUsers(){
+        log.info("Getting all users");
         return userRepo.findAll();
     }
 
@@ -35,6 +41,9 @@ public class UserService implements UserDetailsService {
             throw new IllegalArgumentException(validator.errorMessage);
         };
         user.setPassword(encoder.encode(user.getPassword()));
+        Cart cart = new Cart();
+        cartRepo.save(cart);
+        user.setCart(cart);
         userRepo.save(user);
     }
 

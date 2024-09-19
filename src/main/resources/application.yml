@@ -4,7 +4,9 @@ spring:
     username: nizar
     password: nizar123
     driver-class-name: oracle.jdbc.OracleDriver
-
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
 server:
   servlet:
     session:

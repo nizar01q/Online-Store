@@ -3,6 +3,7 @@ package org.example.onlinestore.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.onlinestore.entity.Item;
+import org.example.onlinestore.entity.Store;
 import org.example.onlinestore.service.ItemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +21,14 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping("/additem")
-    public ModelAndView addItem(@RequestParam ("title") String title,
-                          @RequestParam ("type") String type,
-                          @RequestParam ("description") String description){
+    public ModelAndView addItem(@RequestParam("price") long price,
+                            @RequestParam ("title") String title,
+                            @RequestParam ("type") String type,
+                            @RequestParam ("description") String description,
+                            @RequestParam ("storeID") Store storeID,
+                            @RequestParam ("imgURL") String imgURL){
 
-        Item item = new Item(title,type,description);
+        Item item = new Item(price,title,type,description,imgURL,storeID);
         itemService.createItem(item);
 
         ModelAndView mv = new ModelAndView();
@@ -51,11 +55,14 @@ public class ItemController {
 
     @PostMapping("/updateitem")
     public ModelAndView updateItem(@RequestParam ("itemID") int itemID,
-                             @RequestParam ("title") String title,
-                             @RequestParam ("type") String type,
-                             @RequestParam ("description") String description){
+                                @RequestParam ("price") long price,
+                                @RequestParam ("title") String title,
+                                @RequestParam ("type") String type,
+                                @RequestParam ("description") String description,
+                                   @RequestParam ("storeID") Store storeID,
+                                   @RequestParam ("imgURL") String imgURL){
 
-        Item item = new Item(itemID,title,type,description);
+        Item item = new Item(itemID,price,title,type,description,imgURL,storeID);
         itemService.remakeItem(item);
 
         ModelAndView mv = new ModelAndView();
@@ -75,18 +82,18 @@ public class ItemController {
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("items", items);
-        mv.setViewName("item/allitems");
+        mv.setViewName("item/viewdetails");
 
         return mv;
     }
 
     @GetMapping("/showitems")
-    public ModelAndView showItems(){
-        List<Item> itemList = itemService.showItems();
+    public ModelAndView showItemsByStoreID(@RequestParam("storeID") Store storeID){
+        List<Item> itemList = itemService.showItemsByStoreID(storeID);
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("items", itemList);
-        mv.setViewName("item/allitems");
+        mv.setViewName("item/electronics");
 
         return mv;
     }
@@ -119,5 +126,15 @@ public class ItemController {
     @GetMapping("/allitems")
     public String allitems(){
         return "item/allitems";
+    }
+
+    @GetMapping("/electronics")
+    public String electronics(){
+        return "item/electronics";
+    }
+
+    @GetMapping("/viewdetails")
+    public String viewDetails(){
+        return "item/viewdetails";
     }
 }

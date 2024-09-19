@@ -21,7 +21,7 @@
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
+            max-width: 600px;
             width: 100%;
         }
         h2 {
@@ -36,14 +36,26 @@
             margin-bottom: 5px;
             color: #555;
         }
-        input[type="text"],
-        textarea,
-        input[type="password"] {
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group select {
             width: calc(100% - 12px);
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
             box-sizing: border-box;
+        }
+        .row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .row .form-group {
+            flex: 1;
+        }
+        .row .form-group input[type="text"],
+        .row .form-group select {
+            width: 100%;
         }
         input[type="submit"] {
             background-color: #28a745;
@@ -57,17 +69,6 @@
         input[type="submit"]:hover {
             background-color: #218838;
         }
-        .radio-group {
-            display: flex;
-            gap: 15px;
-        }
-        .radio-group label {
-            display: flex;
-            align-items: center;
-        }
-        .radio-group input {
-            margin-right: 8px;
-        }
     </style>
 </head>
 <body>
@@ -78,13 +79,33 @@
                 <label for="title">Title:</label>
                 <input type="text" id="title" name="title" required>
             </div>
-            <div class="form-group">
-                <label for="type">Type:</label>
-                <input type="text" id="type" name="type" required>
+            <div class="row">
+                <div class="form-group">
+                    <label for="type">Type:</label>
+                    <select id="type" name="type" required>
+                        <option value="" disabled selected>Select a type</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="home_kitchen">Home & Kitchen</option>
+                        <option value="sports">Sports</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="text" id="price" name="price" placeholder="Enter price..." required>
+                </div>
             </div>
             <div class="form-group">
                 <label for="description">Description:</label>
-              <textarea id="description" name="description" rows="4" cols="50" required></textarea>
+                <textarea id="description" name="description" rows="4" cols="50" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="storeID">Store:</label>
+                <input type="text" id="storeID" name="storeID" placeholder="Enter Store ID..." required>
+            </div>
+            <div class="form-group">
+                <label for="imgURL">Image:</label>
+                <input type="text" id="imgURL" name="imgURL" placeholder="Enter Image URL..." required>
             </div>
             <input type="submit" value="Submit" formaction="additem">
         </form>

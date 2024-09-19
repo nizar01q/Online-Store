@@ -42,4 +42,11 @@ public class User {
         this.password = password;
         this.role = role;
     }
+
+    public User(String username, String password, String role, Cart cart) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.cart = cart;
+    }
 }

@@ -3,6 +3,8 @@ package org.example.onlinestore.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.onlinestore.entity.Cart;
+import org.example.onlinestore.entity.CartItem;
+import org.example.onlinestore.entity.Item;
 import org.example.onlinestore.service.CartService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

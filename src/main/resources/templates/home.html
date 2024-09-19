@@ -8,7 +8,7 @@
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/home.jpg");
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/home2.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -22,6 +22,8 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: visible;
         }
         .header h1 {
             margin: 0;
@@ -46,6 +48,7 @@
             display: flex;
             align-items: center;
             gap: 20px;
+            position: relative;
         }
         .icons a {
             color: white;
@@ -55,6 +58,40 @@
         }
         .icons a:hover {
             color: #ddd;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: rgb(40, 167, 69);
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border-color: #40ed0c;
+            z-index: 1000;
+            color: black;
+            right: 0;
+        }
+        .dropdown-content a {
+            color: #ffffff;
+            padding: 12px 16px;
+            border-color: blue;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+            font-size: 16px;
+        }
+        .dropdown-content a:hover {
+            background-color: #024113;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            border-color: blue;
         }
         .container {
             display: flex;
@@ -122,9 +159,13 @@
             <input type="text" placeholder="Search for products...">
         </div>
         <div class="icons">
-            <a href="#" th:href="@{/manageUsers}" title="Manage Users">
-                &#128100;
-            </a>
+            <div class="dropdown">
+                <a href="#" title="User Profile">&#128100;</a>
+                <div class="dropdown-content">
+                    <a href="#" th:href="@{/management}">Management</a>
+                    <a href="#" th:href="@{/logout}">Logout</a>
+                </div>
+            </div>
             <a href="#" th:href="@{/manageCarts}" title="Manage Carts">
                 &#128722;
             </a>
@@ -135,17 +176,17 @@
         <div class="category-card">
             <h2>Electronics</h2>
             <p>Browse our latest gadgets and devices.</p>
-            <a href="#" th:href="@{/manageItems}">Shop Now</a>
+            <a href="#" th:href="@{/showitems(storeID=1)}">Shop Now</a>
         </div>
         <div class="category-card">
             <h2>Clothing</h2>
             <p>Explore our fashion collection.</p>
-            <a href="#" th:href="@{/category?category=clothing}">Shop Now</a>
+            <a href="#" th:href="@{/getstore(storeID=2)}">Shop Now</a>
         </div>
         <div class="category-card">
             <h2>Home & Kitchen</h2>
             <p>Upgrade your home essentials.</p>
-            <a href="#" th:href="@{/category?category=home}">Shop Now</a>
+            <a href="#" th:href="@{/getstore(storeID=3)}">Shop Now</a>
         </div>
     </div>
 </body>
