@@ -179,13 +179,17 @@
                     <a href="#" th:href="@{/logout}">Logout</a>
                 </div>
             </div>
-            <a href="#" th:href="@{/manageCarts}" title="Manage Carts">&#128722;</a>
+            <a href="#" th:href="@{/getcartitems}" title="Show Cart">&#128722;</a>
         </div>
     </div>
 
     <div class="container">
+        <div th:if="${message}" class="alert">
+            <span th:text="${message}"></span>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
         <div class="product-card" th:each="item : ${items}">
-            <img th:src="${item.getImgURL()}" alt="Item 1">
+            <img th:src="'data:image/jpeg;base64,' + ${item.imgBase64}" alt="Item Image" />
             <h3 th:text="${item.getTitle()}"></h3>
             <div class="price" th:text="'$' + ${item.getPrice()}"></div>
             <a href="#" th:href="@{/getitem(itemID=${item.getItemID()})}">View Details</a>

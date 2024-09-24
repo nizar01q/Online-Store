@@ -9,9 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,14 +25,14 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping("/additem")
-    public ModelAndView addItem(@RequestParam("price") long price,
+    public ModelAndView addItem(@RequestParam("price") BigDecimal price,
                             @RequestParam ("title") String title,
                             @RequestParam ("type") String type,
                             @RequestParam ("description") String description,
                             @RequestParam ("storeID") Store storeID,
-                            @RequestParam ("imgURL") String imgURL){
+                            @RequestParam ("imgURL") MultipartFile img) throws IOException {
 
-        Item item = new Item(price,title,type,description,imgURL,storeID);
+        Item item = new Item(price,title,type,description,img.getBytes(),storeID);
         itemService.createItem(item);
 
         ModelAndView mv = new ModelAndView();
@@ -55,14 +59,14 @@ public class ItemController {
 
     @PostMapping("/updateitem")
     public ModelAndView updateItem(@RequestParam ("itemID") int itemID,
-                                @RequestParam ("price") long price,
+                                @RequestParam ("price") BigDecimal price,
                                 @RequestParam ("title") String title,
                                 @RequestParam ("type") String type,
                                 @RequestParam ("description") String description,
                                    @RequestParam ("storeID") Store storeID,
-                                   @RequestParam ("imgURL") String imgURL){
+                                   @RequestParam ("imgURL") MultipartFile img) throws IOException {
 
-        Item item = new Item(itemID,price,title,type,description,imgURL,storeID);
+        Item item = new Item(itemID,price,title,type,description,img.getBytes(),storeID);
         itemService.remakeItem(item);
 
         ModelAndView mv = new ModelAndView();
@@ -91,7 +95,13 @@ public class ItemController {
     public ModelAndView showItemsByStoreID(@RequestParam("storeID") Store storeID){
         List<Item> itemList = itemService.showItemsByStoreID(storeID);
 
+        for (Item item:itemList){
+            String base64Image = Base64.getEncoder().encodeToString(item.getImg());
+            item.setImgBase64(base64Image);
+        }
+
         ModelAndView mv = new ModelAndView();
+
         mv.addObject("items", itemList);
         mv.setViewName("item/electronics");
 

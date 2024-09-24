@@ -3,6 +3,7 @@ package org.example.onlinestore.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -16,11 +17,17 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_id_seq")
     @SequenceGenerator(name = "item_id_seq", sequenceName = "item_id_seq", allocationSize = 1)
     private int itemID;
-    private long price;
+    private BigDecimal price;
     private String title;
     private String type;
     private String description;
-    private String imgURL;
+
+    @Lob
+    @Column(name = "IMG")
+    private byte[] img;
+
+    @Transient
+    private String imgBase64;
 
     @ManyToOne()
     @JoinColumn(name = "STORE_STOREID")
@@ -37,22 +44,22 @@ public class Item {
         this.store = store;
     }
 
-    public Item(int itemID, long price, String title, String type, String description, String imgURL, Store store) {
+    public Item(int itemID, BigDecimal price, String title, String type, String description, byte[] imgURL, Store store) {
         this.itemID = itemID;
         this.price = price;
         this.title = title;
         this.type = type;
         this.description = description;
-        this.imgURL = imgURL;
+        this.img = imgURL;
         this.store = store;
     }
 
-    public Item(long price, String title, String type, String description, String imgURL, Store store) {
+    public Item(BigDecimal price, String title, String type, String description, byte[] imgURL, Store store) {
         this.price = price;
         this.title = title;
         this.type = type;
         this.description = description;
-        this.imgURL = imgURL;
+        this.img = imgURL;
         this.store = store;
     }
 }

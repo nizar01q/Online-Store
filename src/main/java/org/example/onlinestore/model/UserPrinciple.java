@@ -28,6 +28,10 @@ public class UserPrinciple implements UserDetails {
         return user.getUsername();
     }
 
+    public int getUserId(){
+        return user.getUserID();
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
