@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoShop - Homepage</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/home.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+        }
+        .header {
+            background-color: rgba(76, 175, 80, 0.9);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: visible;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+        .search-bar {
+            flex-grow: 1;
+            margin: 0 20px;
+            position: relative;
+            display: flex;
+        }
+        .search-bar input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 25px;
+            border: none;
+            box-sizing: border-box;
+            padding-left: 20px;
+            font-size: 16px;
+        }
+        .search-bar button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 0 10px;
+        }
+        .icons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+        }
+        .icons a {
+            color: white;
+            text-decoration: none;
+            font-size: 22px;
+            transition: color 0.3s;
+        }
+        .icons a:hover {
+            color: #ddd;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: rgb(40, 167, 69);
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border-color: #40ed0c;
+            z-index: 1000;
+            color: black;
+            right: 0;
+        }
+        .dropdown-content a {
+            color: #ffffff;
+            padding: 12px 16px;
+            border-color: blue;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+            font-size: 16px;
+        }
+        .dropdown-content a:hover {
+            background-color: #024113;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            border-color: blue;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 40px;
+        }
+        .category-card {
+            background-color: white;
+            color: black;
+            padding: 20px;
+            margin: 15px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .category-card h2 {
+            margin: 0 0 10px;
+            font-size: 22px;
+        }
+        .category-card p {
+            margin: 10px 0;
+            color: #555;
+        }
+        .category-card a {
+            display: inline-block;
+            margin-top: 15px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .category-card a:hover {
+            background-color: #218838;
+        }
+        .category-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .search-bar {
+                margin: 10px 0;
+            }
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        .alert {
+            padding: 15px;
+            background-color: #ff0000;
+            color: white;
+            margin-bottom: 15px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+        }
+
+        .alert .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .alert .closebtn:hover {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a th:href="@{/home}" style="text-decoration: none;color: white;">
+            <h1>EchoShop</h1>
+        </a>
+        <div th:if="${message}" class="alert">
+            <span th:text="${message}"></span>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
+
+        <form action="/searchItems" method="get" class="search-bar">
+            <input type="text" id="query" name="query" placeholder="Search for products...">
+            <button type="submit">&#128269;</button>
+        </form>
+
+        <div class="icons">
+            <div class="dropdown">
+                <a href="#" title="User Profile">&#128100;</a>
+                <div class="dropdown-content">
+                    <a href="#" th:href="@{/appManager}" sec:authorize="hasRole('ADMIN')">Management</a>
+                    <a href="#" th:href="@{/fillUserInfo}">My account</a>
+                    <a href="#" th:href="@{/currentUserOrderHistory}">Order history</a>
+                    <a href="#" th:href="@{/logout}">Logout</a>
+                </div>
+            </div>
+            <a href="#" th:href="@{/getcartitems}" title="Show Cart">
+                &#128722;
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="category-card">
+            <h2>Electronics</h2>
+            <p>Browse our latest gadgets and devices.</p>
+            <a href="#" th:href="@{/showitems(storeID=1)}">Shop Now</a>
+        </div>
+        <div class="category-card">
+            <h2>Clothing</h2>
+            <p>Explore our fashion collection.</p>
+            <a href="#" th:href="@{/showitems(storeID=2)}">Shop Now</a>
+        </div>
+        <div class="category-card">
+            <h2>Home & Kitchen</h2>
+            <p>Upgrade your home essentials.</p>
+            <a href="#" th:href="@{/showitems(storeID=21)}">Shop Now</a>
+        </div>
+    </div>
+</body>
+</html>

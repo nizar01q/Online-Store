@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface CartRepo extends JpaRepository<Cart,Integer> {
+//    Cart findByUserId(int userID);
 }

@@ -3,6 +3,8 @@ package org.example.onlinestore.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.onlinestore.entity.Cart;
+import org.example.onlinestore.entity.CartItem;
+import org.example.onlinestore.entity.Item;
 import org.example.onlinestore.service.CartService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +22,12 @@ import java.util.Optional;
 public class CartController {
     private final CartService cartService;
 
-    @GetMapping("/getallcarts")
+    @GetMapping("/allcarts")
     public ModelAndView showCarts(){
         List<Cart> cartList = cartService.showCarts();
         ModelAndView mv = new ModelAndView();
         mv.addObject("carts",cartList);
-        mv.setViewName("allcarts.jsp");
+        mv.setViewName("cart/allcarts");
 
         return mv;
     }
@@ -39,10 +41,11 @@ public class CartController {
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("carts",carts);
-        mv.setViewName("allcarts.jsp");
+        mv.setViewName("cart/allcarts");
 
         return mv;
     }
+
 
     @PostMapping("/addcart")
     public ModelAndView addCart(){
@@ -52,7 +55,7 @@ public class CartController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","New cart");
         mv.addObject("addedOrRemoved","created");
-        mv.setViewName("success.jsp");
+        mv.setViewName("success");
 
         return mv;
     }
@@ -65,8 +68,23 @@ public class CartController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("newOrNot","Cart");
         mv.addObject("addedOrRemoved","removed");
-        mv.setViewName("success.jsp");
+        mv.setViewName("success");
 
         return mv;
+    }
+
+    @GetMapping("/cartDeletion")
+    public String cartDeletion(){
+        return "cart/cartDeletion";
+    }
+
+    @GetMapping("/cartGet")
+    public String cartGet(){
+        return "cart/cartGet";
+    }
+
+    @GetMapping("/manageCarts")
+    public String manageCarts(){
+        return "cart/manageCarts";
     }
 }

@@ -1,13 +1,31 @@
 package org.example.onlinestore.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.security.Principal;
 
 @Controller
 public class HomeController {
 
-    @RequestMapping("/")
-    public String home(){
-        return "home.jsp";
+    @GetMapping("/home")
+    public String home(Principal principal ){
+        if(principal != null){
+            return "home";
+        }
+        else {
+        return "redirect:/login";
+        }
     }
+
+    @GetMapping("/appManager")
+    public String appManager(){
+        return "appManager";
+    }
+
+    @GetMapping("/success")
+    public String success(){
+        return "success";
+    }
+
 }

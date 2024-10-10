@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import org.example.onlinestore.entity.Cart;
 import org.example.onlinestore.repo.CartRepo;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,4 +31,5 @@ public class CartService {
     public void deleteCart(Cart cart) {
         cartRepo.deleteById(cart.getCartID());
     }
+
 }
