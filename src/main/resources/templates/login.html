@@ -7,7 +7,7 @@
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-image: url("/images/login.jpg");
             background-color: rgba(244, 244, 244, 0.3);
         }
@@ -52,33 +52,80 @@
             justify-content: space-between;
             margin-top: 20px;
         }
-        input[type="submit"] {
+        input[type="submit"],
+        input[type="button"] {
             color: white;
             border: none;
-            padding: 10px;
-            border-radius: 4px;
+            padding: 12px 18px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
+            transition: all 0.3s ease;
         }
         .login-button {
             background-color: #28a745;
-            border-radius: 6px;
         }
         .login-button:hover {
             background-color: #218838;
         }
         .register-button {
-            background-color: #28a745;
+            background-color: #ff9800;
+            background-image: linear-gradient(to right, #ff9800, #f76b1c);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
         }
         .register-button:hover {
-            background-color: #b4674b;
+            background-color: #f76b1c;
+            background-image: linear-gradient(to right, #f76b1c, #e94e1b);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+        .alert {
+            padding: 15px;
+            background-color: #e94e1b;
+            color: white;
+            margin-bottom: 15px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+        }
+
+        .alert .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .alert .closebtn:hover {
+            color: black;
+        }
+        .error{
+            color: #ff0029;
+            margin-bottom: 15px;
         }
     </style>
+
 </head>
 <body>
     <div class="form-container">
+        <div th:if="${message}" class="alert">
+            <span th:text="${message}"></span>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
+
         <form action="/login" method="post">
             <h2>Login</h2>
+            <div th:if ="${param.error}" class="error" th:text="'Invalid username or password'"></div>
+            <div th:if ="${param.accountLocked}" class="error" th:text="'Your account is locked,please contact support'"></div>
             <div class="form-group">
                 <label for="username">User Name:</label>
                 <input type="text" id="username" name="username" required>

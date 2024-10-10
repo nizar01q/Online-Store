@@ -24,6 +24,9 @@ public class CartItem {
     @Column(name = "ITEM_ITEMID")
     private int itemID;
 
+    @Column(name = "QUANTITY" )
+    private int quantity;
+
 
     public CartItem(int cartID, int itemID) {
         this.cartID = cartID;

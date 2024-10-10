@@ -9,6 +9,10 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
+            background-image: url("/images/management.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
         .form-container {
             display: flex;
@@ -74,8 +78,8 @@
         <form>
             <h2>Manage Items</h2>
             <input type="submit" value="Add Item" formaction="itemAddition">
-            <input type="submit" value="Delete Item" formaction="itemDeletion">
-            <input type="submit" value="Update Item" formaction="itemUpdate">
+            <input type="submit" value="Delete Item" formaction="/showitemsfordeletion">
+            <input type="submit" value="Update Item" formaction="/showitemsforupdate">
             <input type="submit" value="Get Item" formaction="itemGet">
             <input type="submit" value="Show All Items" formaction="showitems">
         </form>

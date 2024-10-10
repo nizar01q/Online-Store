@@ -9,6 +9,10 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
+            background-image: url("/images/management.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
         .table-container {
             display: flex;
@@ -42,12 +46,14 @@
             <thead>
                 <tr>
                     <th>Store ID</th>
+                    <th>Name</th>
                 </tr>
             </thead>
             <tbody>
 
                 <tr th:each="store : ${stores}">
                     <td th:text="${store.getStoreID()}"></td>
+                    <td th:text="${store.getStoreName()}"></td>
                 </tr>
 
             </tbody>

@@ -7,23 +7,26 @@
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f4f4;
-        }
-        .form-container {
+            background-image: url("/images/management.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
-        form {
-            background-color: #fff;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
             width: 100%;
         }
+
         h2 {
             margin: 0 0 20px;
             color: #333;
@@ -36,14 +39,26 @@
             margin-bottom: 5px;
             color: #555;
         }
-        input[type="text"],
-        textarea,
-        input[type="password"] {
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group select {
             width: calc(100% - 12px);
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
             box-sizing: border-box;
+        }
+        .row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .row .form-group {
+            flex: 1;
+        }
+        .row .form-group input[type="text"],
+        .row .form-group select {
+            width: 100%;
         }
         input[type="submit"] {
             background-color: #28a745;
@@ -57,38 +72,76 @@
         input[type="submit"]:hover {
             background-color: #218838;
         }
-        .radio-group {
-            display: flex;
-            gap: 15px;
+        .alert {
+            padding: 15px;
+            background-color: #28a745;
+            color: white;
+            margin-bottom: 15px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
         }
-        .radio-group label {
-            display: flex;
-            align-items: center;
+
+        .alert .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
         }
-        .radio-group input {
-            margin-right: 8px;
+
+        .alert .closebtn:hover {
+            color: black;
         }
     </style>
 </head>
 <body>
     <div class="form-container">
+        <div th:if="${message}" class="alert">
+            <span th:text="${message}"></span>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
         <form method="post" enctype="multipart/form-data">
             <h2>Update Item</h2>
-            <div class="form-group">
-                <label for="itemID">Item ID:</label>
-                <input type="text" id="itemID" name="itemID" required>
-            </div>
+            <input type="hidden" name="itemID" th:value="${item.getItemID()}">
             <div class="form-group">
                 <label for="title">Title:</label>
-                <input type="text" id="title" name="title" required>
+                <input type="text" id="title" name="title" th:value="${item.getTitle()}" required>
             </div>
-            <div class="form-group">
-                <label for="type">Type:</label>
-                <input type="text" id="type" name="type" required>
+            <div class="row">
+                <div class="form-group">
+                    <label for="type">Type:</label>
+                    <select id="type" name="type" required>
+                        <option value="" disabled selected>Select a type</option>
+                        <option th:selected="${item.getType() == 'electronics'}" value="electronics">Electronics</option>
+                        <option th:selected="${item.getType() == 'clothing'}" value="clothing">Clothing</option>
+                        <option th:selected="${item.getType() == 'home_kitchen'}" value="home_kitchen">Home & Kitchen</option>
+                        <option th:selected="${item.getType() == 'sports'}" value="sports">Sports</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="text" id="price" name="price" placeholder="Enter price..." th:value="${item.getPrice()}" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity:</label>
+                    <input type="text" id="quantity" name="quantity" th:value="${item.getItemQuantity()}" required>
+                </div>
             </div>
             <div class="form-group">
                 <label for="description">Description:</label>
-              <textarea id="description" name="description" rows="4" cols="50" required></textarea>
+                <textarea id="description" name="description" rows="4" cols="50" th:text="${item.getDescription()}" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="imgURL">Upload New Image, or keep the existing one:</label>
+                <input type="file" id="imgURL" name="imgURL" accept="image/*">
             </div>
             <input type="submit" value="Submit" formaction="updateitem">
         </form>

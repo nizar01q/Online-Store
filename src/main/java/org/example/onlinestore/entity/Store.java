@@ -21,10 +21,13 @@ public class Store {
     @SequenceGenerator(name = "store_id_seq", sequenceName = "store_id_seq", allocationSize = 1)
     private int storeID;
 
+
     @OneToMany(mappedBy = "store")
     List<Item> items = new ArrayList<>();
 
     public Store(int storeID) {
         this.storeID = storeID;
     }
+
+
 }

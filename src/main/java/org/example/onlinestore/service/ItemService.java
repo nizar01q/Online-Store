@@ -8,8 +8,9 @@ import org.example.onlinestore.repo.ItemRepo;
 import org.example.onlinestore.entity.Item;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,4 +48,31 @@ public class ItemService {
         }
         return items;
     }
+
+    public List<Item> showAllItems() {
+        return itemRepo.findAll();
+    }
+
+    public Optional<Item> getItemForCart(CartItem cartItem) {
+        return itemRepo.findById(cartItem.getItemID());
+    }
+
+    public List<Item> searchItems(String query) {
+        return itemRepo.findByTitleContainingIgnoreCase(query);
+    }
+
+    public List<Item> searchFilters(int minQuantity, int maxQuantity, BigDecimal minPrice, BigDecimal maxPrice, String statusQuery, String titleQuery) {
+
+        int minQ = minQuantity != 0 ? minQuantity : 0;
+        int maxQ = maxQuantity != 0 ? maxQuantity : Integer.MAX_VALUE;
+        BigDecimal min = minPrice != null ? minPrice : BigDecimal.ZERO;
+        BigDecimal max = maxPrice != null ? maxPrice : BigDecimal.valueOf(Long.MAX_VALUE);
+        String status = (statusQuery == null || statusQuery.isEmpty()) ? "" : statusQuery;
+        String title = (titleQuery == null || titleQuery.isEmpty()) ? "" : titleQuery;
+
+
+        return itemRepo.findByTitleContainingIgnoreCaseAndPriceBetweenAndItemQuantityBetweenAndItemStatusContainingIgnoreCase(
+                title, min, max, minQ, maxQ, status);
+}
+
 }

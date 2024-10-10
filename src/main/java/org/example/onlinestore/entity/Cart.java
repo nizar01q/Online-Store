@@ -21,7 +21,6 @@ public class Cart {
     @SequenceGenerator(name = "cart_id_seq", sequenceName = "cart_id_seq", allocationSize = 1)
     private int cartID;
 
-
     @ManyToMany
     @JoinTable(
             name = "CART_ITEM",

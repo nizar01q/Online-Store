@@ -7,8 +7,8 @@
     <style>
         body {
             margin: 0;
-            font-family: 'Arial', sans-serif;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/store1/electronics.jpg");
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/electronics.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -34,6 +34,7 @@
             flex-grow: 1;
             margin: 0 20px;
             position: relative;
+            display: flex;
         }
         .search-bar input[type="text"] {
             width: 100%;
@@ -43,6 +44,14 @@
             box-sizing: border-box;
             padding-left: 20px;
             font-size: 16px;
+        }
+        .search-bar button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 0 10px;
         }
         .icons {
             display: flex;
@@ -140,13 +149,41 @@
             padding: 12px 20px;
             border-radius: 4px;
             font-weight: bold;
-            width: 50%;
+            width: 30%;
             align-items: center;
             align-self: center;
             transition: background-color 0.3s;
         }
         .product-card button:hover {
             background-color: #ff0029;
+        }
+         .alert {
+            padding: 15px;
+            background-color: #aa8e0d;
+            color: white;
+            margin-bottom: 15px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+        }
+
+        .alert .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .alert .closebtn:hover {
+            color: black;
         }
 
         @media (max-width: 768px) {
@@ -165,34 +202,28 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>EchoShop</h1>
-        <div class="search-bar">
-            <input type="text" placeholder="Search for products...">
-        </div>
-        <div class="icons">
-            <div class="dropdown">
-                <a href="#" title="User Profile">&#128100;</a>
-                <div class="dropdown-content">
-                    <a href="#" th:href="@{/management}">Management</a>
-                    <a href="#" th:href="@{/logout}">Logout</a>
-                </div>
-            </div>
-            <a href="#" th:href="@{/getcartitems}" title="Show Cart">&#128722;</a>
-        </div>
-    </div>
+
 
     <div class="container">
+        <div th:if="${message}" class="alert">
+            <span th:text="${message}"></span>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
         <div class="product-card" th:each="item : ${items}">
-            <img th:src="${item.getImg()}" alt="Item 1">
+            <img th:src="'data:image/jpeg;base64,' + ${item.imgBase64}" alt="Item Image">
             <h3 th:text="${item.getTitle()}"></h3>
             <p th:text="${item.getDescription()}"></p>
             <div class="price" th:text="'$' + ${item.getPrice()}"></div>
             <form action="/addtocart" method="post">
                 <input type="hidden" name="itemID" th:value="${item.getItemID()}">
-                <button type="submit">Add to cart</button>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <label for="quantity">Qty:</label>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1" step="1" style="width: 60px;">
+                    <button type="submit">Add to cart</button>
+                </div>
             </form>
         </div>
+
     </div>
 </body>
 </html>

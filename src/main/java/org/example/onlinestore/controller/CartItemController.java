@@ -1,7 +1,6 @@
 package org.example.onlinestore.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.onlinestore.entity.Cart;
 import org.example.onlinestore.entity.CartItem;
 import org.example.onlinestore.entity.Item;
 import org.example.onlinestore.entity.User;
@@ -15,12 +14,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.*;
 
 
 @Controller
@@ -32,20 +32,23 @@ public class CartItemController {
     private final CartItemService cartItemService;
 
     @PostMapping("/addtocart")
-    public String addToCart(@RequestParam("itemID") int itemID, RedirectAttributes redirectAttributes){
+    public String addToCart(@RequestParam("itemID") int itemID,
+                            @RequestParam("quantity") int quantity
+                            ,@RequestHeader(value = "Referer", required = false) String referer
+                            ,RedirectAttributes redirectAttributes){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         int userId = ((UserPrinciple) authentication.getPrincipal()).getUserId();
 
         User user = userService.showUserByID(new User(userId)).get();
         CartItem cartItem = new CartItem(user.getCart().getCartID(),itemID);
-        cartItemService.cartLoad(cartItem);
 
-
+        for (int i = 0;i < quantity; i++) {
+            cartItemService.cartLoad(cartItem);
+        }
 
         redirectAttributes.addFlashAttribute("message","Item successfully added to your cart");
 
-
-        return "redirect:/showitems?storeID=1";
+        return "redirect:" + (referer != null ? referer : "item/electronics");
     }
 
 
@@ -56,15 +59,30 @@ public class CartItemController {
         int userId = ((UserPrinciple) authentication.getPrincipal()).getUserId();
 
         User user = userService.showUserByID(new User(userId)).get();
-        List<CartItem> cartItem = cartItemService.getCartItemsByCart(user.getCart().getCartID());
-        List<Item> items = itemService.getItemsForCart(cartItem);
+        List<CartItem> cartItems = cartItemService.getCartItemsByCart(user.getCart().getCartID());
+        List<Item> items = itemService.getItemsForCart(cartItems);
+
+        Map<Integer, Integer> itemQuantities = new HashMap<>();
+            for (CartItem cartItem : cartItems) {
+                itemQuantities.put(cartItem.getItemID(), cartItem.getQuantity());
+            }
+
+            for (Item item : items) {
+                String base64Image = Base64.getEncoder().encodeToString(item.getImg());
+                item.setImgBase64(base64Image);
+            }
 
         BigDecimal totalPrice = items.stream()
-                        .map(Item::getPrice)
-                        .reduce(BigDecimal.ZERO,BigDecimal::add);
+                .map(item -> {
+                    int quantity = itemQuantities.get(item.getItemID());
+                    BigDecimal price = item.getPrice();
+                    return price.multiply(BigDecimal.valueOf(quantity));})
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
 
         ModelAndView mv = new ModelAndView();
-        mv.addObject("items",items);
+        mv.addObject("items", items);
+        mv.addObject("itemQuantities", itemQuantities);
         mv.addObject("totalPrice", totalPrice);
         mv.setViewName("cart/cartitems");
 
@@ -73,20 +91,17 @@ public class CartItemController {
 
 
     @PostMapping("/removecartitem")
-    public ModelAndView removecartitem(@RequestParam("itemID") int itemID){
+    public String removecartitem(@RequestParam("itemID") int itemID,
+                                       @RequestHeader(value = "Referer", required = false) String referer, RedirectAttributes redirectAttributes){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         int userId = ((UserPrinciple) authentication.getPrincipal()).getUserId();
-
         User user = userService.showUserByID(new User(userId)).get();
 
         cartItemService.removeItemFromCart(user.getCart().getCartID(),itemID);
 
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("newOrNot","Item");
-        mv.addObject("addedOrRemoved","removed from cart");
-        mv.setViewName("success");
+        redirectAttributes.addFlashAttribute("message","Item removed from your cart");
 
-        return mv;
+        return "redirect:" + (referer != null ? referer : "item/electronics");
     }
 
     @GetMapping("cartitems")

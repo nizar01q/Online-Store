@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +7,8 @@
     <style>
         body {
             margin: 0;
-            font-family: 'Arial', sans-serif;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/cart.jpg");
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/home.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -34,6 +34,7 @@
             flex-grow: 1;
             margin: 0 20px;
             position: relative;
+            display: flex;
         }
         .search-bar input[type="text"] {
             width: 100%;
@@ -43,6 +44,14 @@
             box-sizing: border-box;
             padding-left: 20px;
             font-size: 16px;
+        }
+        .search-bar button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 0 10px;
         }
         .icons {
             display: flex;
@@ -150,19 +159,58 @@
                 align-items: center;
             }
         }
+        .alert {
+            padding: 15px;
+            background-color: #ff0000;
+            color: white;
+            margin-bottom: 15px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+        }
+
+        .alert .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .alert .closebtn:hover {
+            color: black;
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>EchoShop</h1>
-        <div class="search-bar">
-            <input type="text" placeholder="Search for products...">
+        <a th:href="@{/home}" style="text-decoration: none;color: white;">
+            <h1>EchoShop</h1>
+        </a>
+        <div th:if="${message}" class="alert">
+            <span th:text="${message}"></span>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         </div>
+
+        <form action="/searchItems" method="get" class="search-bar">
+            <input type="text" id="query" name="query" placeholder="Search for products...">
+            <button type="submit">&#128269;</button>
+        </form>
+
         <div class="icons">
             <div class="dropdown">
                 <a href="#" title="User Profile">&#128100;</a>
                 <div class="dropdown-content">
-                    <a href="#" th:href="@{/management}">Management</a>
+                    <a href="#" th:href="@{/appManager}" sec:authorize="hasRole('ADMIN')">Management</a>
+                    <a href="#" th:href="@{/fillUserInfo}">My account</a>
+                    <a href="#" th:href="@{/currentUserOrderHistory}">Order history</a>
                     <a href="#" th:href="@{/logout}">Logout</a>
                 </div>
             </div>
@@ -181,12 +229,12 @@
         <div class="category-card">
             <h2>Clothing</h2>
             <p>Explore our fashion collection.</p>
-            <a href="#" th:href="@{/getstore(storeID=2)}">Shop Now</a>
+            <a href="#" th:href="@{/showitems(storeID=2)}">Shop Now</a>
         </div>
         <div class="category-card">
             <h2>Home & Kitchen</h2>
             <p>Upgrade your home essentials.</p>
-            <a href="#" th:href="@{/getstore(storeID=3)}">Shop Now</a>
+            <a href="#" th:href="@{/showitems(storeID=21)}">Shop Now</a>
         </div>
     </div>
 </body>

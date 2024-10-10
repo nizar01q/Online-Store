@@ -7,8 +7,10 @@ import org.example.onlinestore.service.StoreService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,16 +22,15 @@ public class StoreController {
     private final StoreService storeService;
 
     @PostMapping("/createstore")
-    public ModelAndView createStore(){
+    public String createStore(@RequestParam("storeName") String storeName,
+                              @RequestHeader(value = "Referer", required = false) String referer,
+                              RedirectAttributes redirectAttributes){
         Store store = new Store();
         storeService.addStore(store);
 
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("newOrNot","New Store");
-        mv.addObject("addedOrRemoved","added");
-        mv.setViewName("success");
+        redirectAttributes.addFlashAttribute("message","New store has been created");
 
-        return mv;
+        return "redirect:" + (referer != null ? referer : "appManager");
     }
 
     @PostMapping("/removestore")
@@ -88,5 +89,10 @@ public class StoreController {
     @GetMapping("/manageStores")
     public String manageStores(){
         return "store/manageStores";
+    }
+
+    @GetMapping("/storeCreation")
+    public String storeCreation(){
+        return "store/storeCreation";
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +7,8 @@
     <style>
         body {
             margin: 0;
-            font-family: 'Arial', sans-serif;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/store1/electronics.jpg");
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/electronics.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -34,6 +34,7 @@
             flex-grow: 1;
             margin: 0 20px;
             position: relative;
+            display: flex;
         }
         .search-bar input[type="text"] {
             width: 100%;
@@ -43,6 +44,14 @@
             box-sizing: border-box;
             padding-left: 20px;
             font-size: 16px;
+        }
+        .search-bar button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 0 10px;
         }
         .icons {
             display: flex;
@@ -150,6 +159,27 @@
             transform: scale(1.05);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
+         .alert {
+        padding: 15px;
+        background-color: #4CAF50;
+        color: white;
+        margin-bottom: 15px;
+    }
+
+        .alert .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .alert .closebtn:hover {
+            color: black;
+        }
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -167,15 +197,19 @@
 </head>
 <body>
     <div class="header">
+        <a th:href="@{/home}" style="text-decoration: none;color: white;">
         <h1>EchoShop</h1>
-        <div class="search-bar">
-            <input type="text" placeholder="Search for products...">
-        </div>
+        </a>
+        <form action="/searchItems" method="get" class="search-bar">
+            <input type="text" id="query" name="query" placeholder="Search for products...">
+            <button type="submit">&#128269;</button>
+        </form>
         <div class="icons">
             <div class="dropdown">
                 <a href="#" title="User Profile">&#128100;</a>
                 <div class="dropdown-content">
-                    <a href="#" th:href="@{/management}">Management</a>
+                    <a href="#" th:href="@{/appManager}" sec:authorize="hasRole('ADMIN')">Management</a>
+                    <a href="#" th:href="@{/fillUserInfoByCurrentUser}">My account</a>
                     <a href="#" th:href="@{/logout}">Logout</a>
                 </div>
             </div>
@@ -192,7 +226,11 @@
             <img th:src="'data:image/jpeg;base64,' + ${item.imgBase64}" alt="Item Image" />
             <h3 th:text="${item.getTitle()}"></h3>
             <div class="price" th:text="'$' + ${item.getPrice()}"></div>
-            <a href="#" th:href="@{/getitem(itemID=${item.getItemID()})}">View Details</a>
+            <p th:if="${item.getItemStatus() == 'In stock' }" style="color: green; font-weight: bold;" th:text="${item.getItemStatus()}"></p>
+            <p th:if="${item.getItemStatus() == 'Out of stock'}" style="color: red; font-weight: bold;" th:text="${item.getItemStatus()}"></p>
+
+            <span th:if="${item.getItemStatus() == 'Out of stock'}" style="color: gray; font-weight: bold;">View Details (Out of stock)</span>
+            <a th:if="${item.getItemStatus() == 'In stock'}" th:href="@{/getitem(itemID=${item.getItemID()})}">View Details</a>
         </div>
     </div>
 </body>

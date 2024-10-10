@@ -40,6 +40,12 @@ public class UserService implements UserDetailsService {
         if(!validator.validatePassword(user.getPassword())){
             throw new IllegalArgumentException(validator.errorMessage);
         };
+        if (userRepo.findByEmail(user.getEmail()).isPresent()){
+            throw new IllegalArgumentException("Email already exists");
+        }
+        if (userRepo.findUserByUsername(user.getUsername()).isPresent()){
+            throw new IllegalArgumentException("Username already exists");
+        }
         user.setPassword(encoder.encode(user.getPassword()));
         Cart cart = new Cart();
         cartRepo.save(cart);
@@ -51,6 +57,7 @@ public class UserService implements UserDetailsService {
         userRepo.deleteById(user.getUserID());
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUsername(username);
@@ -59,5 +66,43 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("User 404");
         }
         return new UserPrinciple(user);
+    }
+
+    public void remakeUser(User user) {
+        User existingUser = userRepo.findById(user.getUserID()).get();
+
+        if(!validator.validatePassword(user.getPassword())){
+            throw new IllegalArgumentException(validator.errorMessage);
+        }
+        if (!user.getUsername().equals(existingUser.getUsername())){
+            if (userRepo.findUserByUsername(user.getUsername()).isPresent()){
+                throw new IllegalArgumentException("Username already exists");
+            }
+            existingUser.setUsername(user.getUsername());
+        }
+        if (!user.getEmail().equals(existingUser.getEmail())){
+            if (userRepo.findByEmail(user.getEmail()).isPresent()){
+                throw new IllegalArgumentException("Email already exists");
+            }
+            existingUser.setEmail(user.getEmail());
+        }
+
+        existingUser.setPassword(encoder.encode(user.getPassword()));
+        existingUser.setRole(user.getRole());
+        existingUser.setAddress(user.getAddress());
+        existingUser.setPaymentMethod(user.getPaymentMethod());
+        userRepo.save(existingUser);
+    }
+
+    public List<User> searchUsers(String query){
+        return userRepo.findByUsernameContainingOrEmailContainingOrRoleContaining(query,query,query);
+    }
+
+    public void changeUserAddressOrPayment(User user){
+        userRepo.save(user);
+    }
+
+    public void changeUserStatus(User user) {
+        userRepo.save(user);
     }
 }

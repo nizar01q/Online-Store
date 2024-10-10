@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            background-image: url("/images/management.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            max-width: 1000px;
+            width: 120%;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        input[type="text"], input[type="number"],select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .user-table {
+            background-color: #fff;
+            border-collapse: collapse;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+        .user-table th, .user-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .user-table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .user-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group select {
+            width: calc(100% - 12px);
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .row .form-group {
+            flex: 1;
+        }
+        .row .form-group input[type="text"],
+        .row .form-group select {
+            width: 100%;
+        }
+        button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-update1 {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-create {
+            background-color: #28a745;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .alert {
+            padding: 15px;
+            background-color: #28a745;
+            color: white;
+            margin-bottom: 15px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+        }
+
+        .alert .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .alert .closebtn:hover {
+            color: black;
+        }
+        .error{
+            color: red;
+            margin-bottom: 15px;
+        }
+        .radio-group {
+            display: flex;
+            gap: 15px;
+        }
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+        }
+        .radio-group input {
+            margin-right: 8px;
+            font-weight: lighter;
+        }
+        .divider {
+        border: none;
+        border-top: 2px solid #ff0029;
+        margin: 20px 0;
+        }
+        details {
+            margin-bottom: 10px;
+        }
+
+        details summary {
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        details[open] summary::after {
+            content: "▲";
+            color: #28a745;
+            margin-left: 5px;
+        }
+
+        summary::after {
+            content: "▼";
+            color: #28a745;
+            margin-left: 5px;
+        }
+        .form-group2 div {
+            margin-bottom: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .input-group div {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .input-group div:last-child {
+            margin-right: 0;
+        }
+
+
+        input[type="text"],input[type="number"],select {
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Manage Items</h2>
+         <div th:if="${message}" class="alert">
+            <span th:text="${message}"></span>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
+        <form method="post" action="/additem" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" minlength="30" maxlength="60" required>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="type">Type:</label>
+                    <select id="type" name="type" required>
+                        <option value="" disabled selected>Select a type</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="home">Home</option>
+                        <option value="sports">Sports</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="text" id="price" name="price" placeholder="Enter price..." required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Quantity:</label>
+                    <input type="text" id="quantity" name="quantity" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="4" cols="50" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="imgURL">Upload Image:</label>
+                <input type="file" id="imgURL" name="imgURL" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn-create">Add new item</button>
+            <hr class="divider">
+        </form>
+
+        <form method="get" action="/searchItemsFilters">
+    <div class="form-group2">
+            <div>
+                <label for="titleQuery">Title:</label>
+                <input type="text" id="titleQuery" name="titleQuery">
+            </div>
+        <div class="input-group">
+            <div>
+                <label for="minPrice">Min Price:</label>
+                <input type="number" id="minPrice" name="minPrice">
+            </div>
+            <div>
+                <label for="maxPrice">Max Price:</label>
+                <input type="number" id="maxPrice" name="maxPrice">
+            </div>
+        </div>
+        <div class="input-group">
+            <div>
+                <label for="minQuantity">Min Quantity:</label>
+                <input type="number" id="minQuantity" name="minQuantity">
+            </div>
+            <div>
+                <label for="maxQuantity">Max Quantity:</label>
+                <input type="number" id="maxQuantity" name="maxQuantity">
+            </div>
+        </div>
+        <div>
+            <label for="statusQuery">Item Status:</label>
+            <select id="statusQuery" name="statusQuery">
+                <option value="">--- Not specified ---</option>
+                <option>Out Of Stock</option>
+                <option>In Stock</option>
+            </select>
+        </div>
+        <button type="submit" class="btn-create">Search</button>
+        <div th:if ="${error}" class="error" th:text="${error}"></div>
+    </div>
+
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>Item ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${items}">
+                    <td th:text="${item.getItemID()}"></td>
+                    <td th:text="${item.getTitle()}"></td>
+                    <td>
+                        <details>
+                            <summary>View Description</summary>
+                            <span th:text="${item.getDescription()}" ></span>
+                        </details>
+                    </td>
+                    <td th:text="${item.getType()}"></td>
+                    <td th:text="'$' + ${item.getPrice()}"></td>
+                    <td th:text="${item.getItemQuantity()}"></td>
+                    <td th:text="${item.getItemStatus()}"></td>
+                    <td>
+                        <div class="action-buttons">
+                            <form>
+                                <input type="hidden" name="itemID" th:value="${item.getItemID()}">
+                            </form>
+                            <form method="get" action="/fillItemInfo" style="display: inline;">
+                                <input type="hidden" name="itemID" th:value="${item.getItemID()}">
+                                <button type="submit" class="btn-update1">Update</button>
+                            </form>
+                            <form method="post" action="/removeitem" style="display: inline;">
+                                <input type="hidden" name="itemID" th:value="${item.getItemID()}">
+                                <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to remove this item?')">Remove</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        </form>
+    </div>
+</body>
+</html>

@@ -18,9 +18,9 @@ public class HomeController {
         }
     }
 
-    @GetMapping("/management")
-    public String management(){
-        return "management";
+    @GetMapping("/appManager")
+    public String appManager(){
+        return "appManager";
     }
 
     @GetMapping("/success")

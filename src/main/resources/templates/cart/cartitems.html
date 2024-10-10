@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +7,8 @@
     <style>
         body {
             margin: 0;
-            font-family: 'Arial', sans-serif;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/cart.jpg");
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/cart3.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -69,6 +69,7 @@
             margin: 15px;
             border-radius: 8px;
             width: 350px;
+            height: 520px;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s, box-shadow 0.3s;
@@ -78,7 +79,7 @@
         }
         .product-card img {
             width: 100%;
-            height: auto;
+            height: 280px;
             border-radius: 8px;
             margin-bottom: 10px;
         }
@@ -138,17 +139,34 @@
             text-align: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+
         .checkout-summary h2 {
             margin: 0 0 20px;
         }
+
         .checkout-summary .total-price {
             font-size: 24px;
             color: #28a745;
-            font-family: "Arial Black",serif;
+            font-family: "Arial Black", serif;
             font-weight: bold;
             margin-bottom: 20px;
         }
-        .checkout-summary a {
+
+        .checkout-summary .radio-group {
+            margin: 20px 0;
+        }
+
+        .checkout-summary label {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .checkout-summary input[type="text"],
+        .checkout-summary input[type="radio"] {
+            margin: 10px 0;
+        }
+
+        .checkout-summary button {
             display: inline-block;
             background-color: #28a745;
             color: white;
@@ -158,18 +176,37 @@
             font-weight: bold;
             transition: background-color 0.3s;
         }
-        .checkout-summary a:hover {
+
+        .checkout-summary button:hover {
             background-color: #ff0000;
         }
-        .checkout-summary span{
-            color: #a91919;
+
+        .checkout-summary input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
         }
+
+        .checkout-summary .form-group {
+            margin-bottom: 20px;
+        }
+
         .alert {
-        padding: 15px;
-        background-color: #4CAF50;
-        color: white;
-        margin-bottom: 15px;
-    }
+            padding: 15px;
+            background-color: #aa8e0d;
+            color: white;
+            margin-bottom: 15px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+        }
 
         .alert .closebtn {
             margin-left: 15px;
@@ -185,6 +222,63 @@
         .alert .closebtn:hover {
             color: black;
         }
+        .quantity-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .quantity-circle {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: #eaba02;
+            color: black;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin: 0 10px;
+        }
+        .icons a:hover {
+            color: #ddd;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: rgb(40, 167, 69);
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border-color: #40ed0c;
+            z-index: 1000;
+            color: black;
+            right: 0;
+        }
+        .dropdown-content a {
+            color: #ffffff;
+            padding: 12px 16px;
+            border-color: blue;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+            font-size: 16px;
+        }
+        .dropdown-content a:hover {
+            background-color: #024113;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            border-color: blue;
+        }
+
+
 
         @media (max-width: 768px) {
             .header {
@@ -206,34 +300,66 @@
 </head>
 <body>
     <div class="header">
+        <a th:href="@{/home}" style="text-decoration: none;color: white;">
         <h1>EchoShop</h1>
+        </a>
         <div class="search-bar">
             <input type="text" placeholder="Search for products...">
         </div>
         <div class="icons">
-            <a href="#" th:href="@{/getcartitems}" title="Show Cart">&#128722;</a>
+            <div class="dropdown">
+                <a href="#" title="User Profile">&#128100;</a>
+                <div class="dropdown-content">
+                    <a href="#" th:href="@{/appManager}" sec:authorize="hasRole('ADMIN')">Management</a>
+                    <a href="#" th:href="@{/fillUserInfoByCurrentUser}">My account</a>
+                    <a href="#" th:href="@{/currentUserOrderHistory}">Order history</a>
+                    <a href="#" th:href="@{/logout}">Logout</a>
+                </div>
+            </div>
+            <a href="#" th:href="@{/getcartitems}" title="Show Cart">
+                &#128722;
+            </a>
         </div>
     </div>
 
     <div class="container">
+    <div th:if="${message}" class="alert">
+        <span th:text="${message}"></span>
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    </div>
 
-        <div class="product-card" th:each="item : ${items}">
-            <img th:src="${item.getImg()}" alt="Item">
-            <h3 th:text="${item.getTitle()}"></h3>
-            <div class="price" th:text="'$' + ${item.getPrice()}"></div>
-            <a th:href="@{/getitem(itemID=${item.getItemID()})}">View Details</a>
-            <form action="/removecartitem" method="post">
+    <div class="product-card" th:each="item : ${items}">
+        <img th:src="'data:image/jpeg;base64,' + ${item.getImgBase64()}" alt="Item Image">
+        <h3 th:text="${item.getTitle()}"></h3>
+        <div class="price" th:text="'$' + ${item.getPrice()}"></div>
+        <a th:href="@{/getitem(itemID=${item.getItemID()})}">View Details</a>
+
+        <div class="quantity-container">
+
+            <form action="/removecartitem" method="post" style="display:inline;">
                 <input type="hidden" name="itemID" th:value="${item.getItemID()}">
-                <button type="submit">Remove from cart</button>
+                <button type="submit" style="font-size: 25px;">-</button>
+            </form>
+
+                <span class="quantity-circle" th:text="${itemQuantities[item.itemID]}"></span>
+            <form action="/addtocart" method="post" style="display:inline;">
+                <input type="hidden" name="itemID" th:value="${item.getItemID()}">
+                <button type="submit" style="font-size: 25px;">+</button>
             </form>
         </div>
     </div>
+</div>
 
     <div class="checkout-summary">
-        <h2>Checkout Summary</h2>
-        <div class="total-price">Total: $<span th:text="${totalPrice}"></span></div>
-        <a href="#" th:href="@{/checkout}">Proceed to Checkout</a>
-    </div>
+    <h2>Checkout Summary</h2>
+    <div class="total-price">Total: $<span th:text="${totalPrice}"></span></div>
+
+    <form action="/checkout" method="get">
+        <input type="hidden" name="orderTotal" th:value="${totalPrice}">
+        <button type="submit">Proceed to checkout</button>
+    </form>
+</div>
+
 
 </body>
 </html>

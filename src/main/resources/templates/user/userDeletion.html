@@ -9,6 +9,10 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
+                        background-image: url("/images/management.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
         .form-container {
             display: flex;
@@ -67,10 +71,42 @@
         .radio-group input {
             margin-right: 8px;
         }
+        .alert {
+            padding: 15px;
+            background-color: #28a745;
+            color: white;
+            margin-bottom: 15px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+        }
+
+        .alert .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .alert .closebtn:hover {
+            color: black;
+        }
     </style>
 </head>
 <body>
     <div class="form-container">
+        <div th:if="${message}" class="alert">
+            <span th:text="${message}"></span>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
         <form method="post">
             <h2>Remove User</h2>
             <div class="form-group">

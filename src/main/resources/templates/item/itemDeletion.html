@@ -9,6 +9,10 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
+            background-image: url("/images/management.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
         .form-container {
             display: flex;
@@ -21,7 +25,7 @@
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
+            max-width: 600px;
             width: 100%;
         }
         h2 {
@@ -36,13 +40,26 @@
             margin-bottom: 5px;
             color: #555;
         }
-        input[type="text"],
-        input[type="password"] {
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group select {
             width: calc(100% - 12px);
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
             box-sizing: border-box;
+        }
+        .row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .row .form-group {
+            flex: 1;
+        }
+        .row .form-group input[type="text"],
+        .row .form-group select {
+            width: 100%;
         }
         input[type="submit"] {
             background-color: #28a745;
@@ -56,28 +73,53 @@
         input[type="submit"]:hover {
             background-color: #218838;
         }
-        .radio-group {
-            display: flex;
-            gap: 15px;
+        .alert {
+            padding: 15px;
+            background-color: #28a745;
+            color: white;
+            margin-bottom: 15px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
         }
-        .radio-group label {
-            display: flex;
-            align-items: center;
+
+        .alert .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
         }
-        .radio-group input {
-            margin-right: 8px;
+
+        .alert .closebtn:hover {
+            color: black;
         }
+
     </style>
 </head>
 <body>
     <div class="form-container">
-        <form method="post">
+        <div th:if="${message}" class="alert">
+            <span th:text="${message}"></span>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
+        <form method="post" action="/removeitem">
             <h2>Remove Item</h2>
             <div class="form-group">
-                <label for="itemID">Enter ItemID:</label>
-                <input type="text" id="itemID" name="itemID" required>
+               <label for="item"></label>
+                    <select id="item" name="itemID" required>
+                        <option value="" disabled selected>Select item</option>
+                        <option th:each="item:${items}" th:value="${item.getItemID()}" th:text="${item.getTitle()}"></option>
+                    </select>
             </div>
-            <input type="submit" value="Submit" formaction="removeitem">
+            <input type="submit" value="Submit">
         </form>
     </div>
 </body>

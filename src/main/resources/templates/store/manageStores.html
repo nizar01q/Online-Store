@@ -9,6 +9,10 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
+            background-image: url("/images/management.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
         .form-container {
             display: flex;
@@ -80,7 +84,7 @@
     <div class="form-container">
         <form>
             <h2>Manage Stores</h2>
-            <input type="submit" value="Create Store" formaction="createstore" formmethod="post">
+            <input type="submit" value="Create Store" formaction="storeCreation">
             <input type="submit" value="Remove Store" formaction="storeDeletion">
             <input type="submit" value="Get Store" formaction="storeGet">
             <input type="submit" value="Show Stores" formaction="showstores">

@@ -22,6 +22,12 @@ public class Item {
     private String type;
     private String description;
 
+    @Column(name = "ITEM_QUANTITY")
+    private int itemQuantity;
+
+    @Column(name = "ITEM_STATUS")
+    private String itemStatus;
+
     @Lob
     @Column(name = "IMG")
     private byte[] img;

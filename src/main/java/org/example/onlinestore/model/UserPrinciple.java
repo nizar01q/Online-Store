@@ -2,6 +2,7 @@ package org.example.onlinestore.model;
 
 import lombok.AllArgsConstructor;
 import org.example.onlinestore.entity.User;
+import org.example.onlinestore.enums.UserStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,7 +16,7 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> user.getRole());
+        return List.of(() -> "ROLE_" + user.getRole());
     }
 
     @Override
@@ -39,7 +40,7 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return user.getUserStatus().equals(UserStatus.ACTIVE.getStatus());
     }
 
     @Override
